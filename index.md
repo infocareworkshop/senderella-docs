@@ -160,6 +160,46 @@ Validate request
 
 ```
 POST /v1/shipment/validate?accessToken=my_key
-JSON body is same
+{
+  "service": 1000,
+  "shipmentOptions": {},
+  "requestOptions": {
+    "printLabel": {
+      "format": "pdf"
+    }
+  },
+  "packages": [
+    {
+      "weight": 1.5,
+      "volume": {
+        "volume": 0.1
+      },
+      "items": [
+        {
+          "senderRef": "item 1",
+          "brand": "Apple",
+          "model": "iPhone 7+",
+          "serial": "1234567890"
+        }
+      ]
+    }
+  ],
+  "sender": {
+    "name": "John Smith",
+    "address": "Test st. 1",
+    "postalCode": "1234",
+    "city": "Vaxjo",
+    "countryCode": "SE",
+    "email": "john@test.com"
+  },
+  "receiver": {
+    "name": "Sven Svensson",
+    "address": "Other st. 2",
+    "postalCode": "5678",
+    "city": "Linkoping",
+    "countryCode": "SE",
+    "email": "sven@test.com"
+  }
+}
 ```
 
