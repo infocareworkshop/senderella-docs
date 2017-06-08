@@ -6,10 +6,8 @@
 
 All endpoints are named with following schema:
 
-`
-https://senderella.io/version/action
-https://senderella.io/version/entity/action
-`
+`https://senderella.io/version/action`
+`https://senderella.io/version/entity/action`
 
 Currently only `v1` is a valid `version`. Words inside path string must be separated with `-` sign.
 
@@ -35,30 +33,10 @@ For GET requests parameters should be passed with GET parameters inside query st
 
 Example:
 
-`
-/sob-api/v1/accessory?accessToken=my_key&productType=1009
-`
+`https://senderella.io/v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label?accessToken=my_key` to get a shipping label
 
 For POST requests only `accessToken` is allowed inside GET parameters. Anything other must be stored inside request body.
 
-### Languages
-
-Language and locale are defined inside user settings. Typically one user is assigned to single country and single locale (but this can be improved in future).
-
-You can pass `Accept-Language` header to determine in which locale output data should be. For example:
-
-`Accept-Language: sv-se, da-dk`
-
-Currently only followed locales are supported:
-
-* sv-se
-* da-dk
-* nb-no
-* fi-fi
-
-*This list may be continued*
-
-**Note** This feature works only for "common" data like accessory, or product types.
 
 ### Accept data types
 
@@ -98,7 +76,6 @@ When an error is occurred response body will be like this:
   "data": null // Delete data ?
 }
 ```
-
 
 ## Authentication
 
