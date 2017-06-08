@@ -6,7 +6,7 @@
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
-| name | String(35) | |
+| name<sup>*</sup> | String(35) | |
 | address | String(35) | |
 | postalCode | String(5) | |
 | city | String(35) | |
@@ -65,18 +65,18 @@ OR
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
-| senderRef? | String | |
-| receiverRef? | String | |
-| brand? | String | |
-| model? | String(49) | |
-| serial? | String | |
+| senderRef | String | |
+| receiverRef | String | |
+| brand | String | |
+| model | String(49) | |
+| serial | String | |
 
 ### ShipmentRequestOptions
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
-| printLabel? | LabelPrintingOptions | |
-| bundlingMode? | String | |
+| printLabel | LabelPrintingOptions | |
+| bundlingMode | String | |
 
 ### LabelPrintingOptions
 
@@ -117,7 +117,7 @@ POST /v1/shipment/submit?accessToken=my_key
         {
           "senderRef": "item 1",
           "brand": "Apple",
-          "model": "iPhone 7+",
+					"model": "iPhone 7",
           "serial": "1234567890"
         }
       ]
@@ -126,18 +126,18 @@ POST /v1/shipment/submit?accessToken=my_key
   "sender": {
     "name": "John Smith",
     "address": "Test st. 1",
-    "postalCode": "1234",
-    "city": "Vaxjo",
+    "postalCode": "35246",
+    "city": "Växjö",
     "countryCode": "SE",
-    "email": "john@test.com"
+    "email": "test@test.test"
   },
   "receiver": {
     "name": "Sven Svensson",
-    "address": "Other st. 2",
-    "postalCode": "5678",
-    "city": "Linkoping",
+    "address": "Receiver street 10",
+    "postalCode": "589 41",
+    "city": "Linköping",
     "countryCode": "SE",
-    "email": "sven@test.com"
+    "email": "test@test.test"
   }
 }
 ```
@@ -178,28 +178,27 @@ POST /v1/shipment/validate?accessToken=my_key
         {
           "senderRef": "item 1",
           "brand": "Apple",
-          "model": "iPhone 7+",
+          "model": "iPhone 7",
           "serial": "1234567890"
         }
       ]
     }
   ],
-  "sender": {
+	"sender": {
     "name": "John Smith",
     "address": "Test st. 1",
-    "postalCode": "1234",
-    "city": "Vaxjo",
+    "postalCode": "35246",
+    "city": "Växjö",
     "countryCode": "SE",
-    "email": "john@test.com"
+    "email": "test@test.test"
   },
   "receiver": {
     "name": "Sven Svensson",
-    "address": "Other st. 2",
-    "postalCode": "5678",
-    "city": "Linkoping",
+    "address": "Receiver street 10",
+    "postalCode": "589 41",
+    "city": "Linköping",
     "countryCode": "SE",
-    "email": "sven@test.com"
+    "email": "test@test.test"
   }
 }
 ```
-
