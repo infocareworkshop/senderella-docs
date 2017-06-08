@@ -1,204 +1,123 @@
-# Shipment API
+# API basics
 
-## Structures
+## Naming convention
 
-### ContactData
+### Endpoints
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| name<sup>*</sup> | String(35) | |
-| address<sup>*</sup> | String(35) | |
-| postalCode<sup>*</sup> | String(5) | |
-| city<sup>*</sup> | String(35) | |
-| countryCode<sup>*</sup> | String(2) | |
-| attention | String(35) | |
-| email<sup>*</sup> | String | |
-| phoneNumber | String(35) | |
-| mobilePhoneNumber | String(35) |  |
+All endpoints are named with following schema:
 
-### Dimensions
+`
+https://senderella.io/version/action
+https://senderella.io/version/entity/action
+`
 
-Contains volume of the package or size of the box.
+Currently only `v1` is a valid `version`. Words inside path string must be separated with `-` sign.
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| volume                 | Number     | m³                                      |
+## Input
 
-OR
+### Charset
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| width                  | Number     | m                                       |
-| height                 | Number     | m                                       |
-| depth                  | Number     | m                                       |
+Only `utf-8` charset is supported.
 
-### Shipment
+### Encoding
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| service<sup>*</sup> | Int | |
-| shipmentOptions | Array | |
-| requestOptions | ShipmentRequestOptions | |
-| orderNumber | String | |
-| shipmentNumber | String | |
-| packages<sup>*</sup> | Array | Array of `Package` |
-| sender<sup>*</sup> | ContactData | |
-| receiver<sup>*</sup> | ContactData | |
-| payer | ContactData | |
-| pickUp | ContactData | |
-| returnTo | ContactData | |
-| pickupDate | Date | |
-| pickupStart | Date | |
-| pickupEnd | Date | |
+You can pass `gzip` or `deflate` inside `Accept-Encoding` header, or omit it.
 
-### Package
+`
+Accept-Encoding: gzip
+`
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| content | String | |
-| weight | Number | |
-| volume | Dimensions | |
-| goodsType | String | |
-| items | Array | Array of `PackageItem` |
+### Parameters
 
-### PackageItem
+All parameters inside query string are notation indifferent. You can use either `camelCase`, `snake_case` or even `kebab-case`. Any of these notations are valid. Next in this document only camelCase will be used. Any unrecognized parameters (not described in this document) will throw validation error and `401` status code.
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| senderRef | String | |
-| receiverRef | String | |
-| brand | String | |
-| model | String(49) | |
-| serial | String | |
+For GET requests parameters should be passed with GET parameters inside query string.
 
-### ShipmentRequestOptions
+Example:
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| printLabel | LabelPrintingOptions | |
-| bundlingMode | String | |
+`
+/sob-api/v1/accessory?accessToken=my_key&productType=1009
+`
 
-### LabelPrintingOptions
+For POST requests only `accessToken` is allowed inside GET parameters. Anything other must be stored inside request body.
 
-| Name                   | Type       | Description                             |
-| ---------------------- | ---------- | --------------------------------------- |
-| format | LabelFormat | |
+### Languages
 
-### LabelFormat
+Language and locale are defined inside user settings. Typically one user is assigned to single country and single locale (but this can be improved in future).
 
-Must be either `pdf`, `zpl` or `png`.
+You can pass `Accept-Language` header to determine in which locale output data should be. For example:
 
-## Working Endpoints & Examples
+`Accept-Language: sv-se, da-dk`
 
-Get label:
-```
-GET /v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label?accessToken=my_key
-```
+Currently only followed locales are supported:
 
-Create request to PostNord Parcel
+* sv-se
+* da-dk
+* nb-no
+* fi-fi
 
-```
-POST /v1/shipment/submit?accessToken=my_key
+*This list may be continued*
+
+**Note** This feature works only for "common" data like accessory, or product types.
+
+### Accept data types
+
+You can pass `Accept` HTTP header. Following types are valid:
+
+* `text/html`
+* `application/json`
+
+Response will contain the same `Content-type` as request's `Accept`. When `text/html` is selected, output will be wrapped inside simple HTML page (This is useful for debug).
+
+## Output
+
+Currently only JSON and HTML output is supported. *XML might be added in the future*
+
+### JSON
+
+Each response is wrapped with object contained `code` and `data` fields. Payload is stored inside `data` field.
+When everything is ok response body will be like this:
+
+```js
 {
-  "service": 1000,
-  "shipmentOptions": {},
-  "requestOptions": {
-    "printLabel": {
-      "format": "pdf"
-    }
-  },
-  "packages": [
-    {
-      "weight": 1.5,
-      "volume": {
-        "volume": 0.1
-      },
-      "items": [
-        {
-          "senderRef": "item 1",
-          "brand": "Apple",
-          "model": "iPhone 7",
-          "serial": "1234567890"
-        }
-      ]
-    }
-  ],
-  "sender": {
-    "name": "John Smith",
-    "address": "Test st. 1",
-    "postalCode": "35246",
-    "city": "Växjö",
-    "countryCode": "SE",
-    "email": "test@test.test"
-  },
-  "receiver": {
-    "name": "Sven Svensson",
-    "address": "Receiver street 10",
-    "postalCode": "589 41",
-    "city": "Linköping",
-    "countryCode": "SE",
-    "email": "test@test.test"
-  }
+  "data": [ // Here can be any payload
+    { "id": 1, name: "Something" },
+    { "id": 2, name: "Something other" }
+  ]
 }
 ```
 
-Output will be like this:
-```
+When an error is occurred response body will be like this:
+
+```js
 {
-  "data": {
-    "shpCsid": 178798,
-    "packageId": 1,
-    "shipmentNumber": 0,
-    "pickupId": null,
-    "pickupDate": "2017-06-06T00:00:00",
-    "senderellaId": "084aa0d8-6bb5-40aa-80ca-fc9da642a9bc"
-  }
+  "code": "error", // Code is always "error"
+  "error": { // errors
+    "message": "Validation error"
+  },
+  "data": null // Delete data ?
 }
 ```
 
-Validate request
 
-```
-POST /v1/shipment/validate?accessToken=my_key
-{
-  "service": 1000,
-  "shipmentOptions": {},
-  "requestOptions": {
-    "printLabel": {
-      "format": "pdf"
-    }
-  },
-  "packages": [
-    {
-      "weight": 1.5,
-      "volume": {
-        "volume": 0.1
-      },
-      "items": [
-        {
-          "senderRef": "item 1",
-          "brand": "Apple",
-          "model": "iPhone 7",
-          "serial": "1234567890"
-        }
-      ]
-    }
-  ],
-	"sender": {
-    "name": "John Smith",
-    "address": "Test st. 1",
-    "postalCode": "35246",
-    "city": "Växjö",
-    "countryCode": "SE",
-    "email": "test@test.test"
-  },
-  "receiver": {
-    "name": "Sven Svensson",
-    "address": "Receiver street 10",
-    "postalCode": "589 41",
-    "city": "Linköping",
-    "countryCode": "SE",
-    "email": "test@test.test"
-  }
-}
-```
+## Authentication
+
+Each request to API must be followed with special **authentication token**. Requests without it will be rejected with `401` status code.
+
+There are some different ways to add your access token to request:
+
+### X-Hub-Api-Token header
+
+You can pass your access key using **X-Hub-Api-Token** header.
+
+`
+X-Hub-Api-Token: YOUR_TOKEN
+`
+
+### accessToken with GET parameters
+
+Just add `accessToken=YOUR_TOKEN` to GET params. For example:
+
+`
+/some-endpoint/?param1=X&param2=Y&accessToken=YOUR_TOKEN
+`
