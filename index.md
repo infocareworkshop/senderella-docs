@@ -7,14 +7,14 @@
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
 | name<sup>*</sup> | String(35) | |
-| address | String(35) | |
-| postalCode | String(5) | |
-| city | String(35) | |
-| countryCode | String(2) | |
-| attention? | String(35) | |
-| email | String | |
-| phoneNumber? | String(35) | |
-| mobilePhoneNumber? | String(35) |  |
+| address<sup>*</sup> | String(35) | |
+| postalCode<sup>*</sup> | String(5) | |
+| city<sup>*</sup> | String(35) | |
+| countryCode<sup>*</sup> | String(2) | |
+| attention | String(35) | |
+| email<sup>*</sup> | String | |
+| phoneNumber | String(35) | |
+| mobilePhoneNumber | String(35) |  |
 
 ### Dimensions
 
@@ -36,30 +36,30 @@ OR
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
-| service | Int | |
-| shipmentOptions? | Array | |
-| requestOptions? | ShipmentRequestOptions | |
-| orderNumber? | String | |
-| shipmentNumber? | String | |
-| packages | Array | Array of `Package` |
-| sender | ContactData | |
-| receiver | ContactData | |
-| payer? | ContactData | |
-| pickUp? | ContactData | |
-| returnTo? | ContactData | |
-| pickupDate? | Date | |
-| pickupStart? | Date | |
-| pickupEnd? | Date | |
+| service<sup>*</sup> | Int | |
+| shipmentOptions | Array | |
+| requestOptions | ShipmentRequestOptions | |
+| orderNumber | String | |
+| shipmentNumber | String | |
+| packages<sup>*</sup> | Array | Array of `Package` |
+| sender<sup>*</sup> | ContactData | |
+| receiver<sup>*</sup> | ContactData | |
+| payer | ContactData | |
+| pickUp | ContactData | |
+| returnTo | ContactData | |
+| pickupDate | Date | |
+| pickupStart | Date | |
+| pickupEnd | Date | |
 
 ### Package
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
-| content? | String | |
-| weight? | Number | |
-| volume? | Dimensions | |
-| goodsType? | String | |
-| items? | Array | Array of `PackageItem` |
+| content | String | |
+| weight | Number | |
+| volume | Dimensions | |
+| goodsType | String | |
+| items | Array | Array of `PackageItem` |
 
 ### PackageItem
 
@@ -117,7 +117,7 @@ POST /v1/shipment/submit?accessToken=my_key
         {
           "senderRef": "item 1",
           "brand": "Apple",
-					"model": "iPhone 7",
+          "model": "iPhone 7",
           "serial": "1234567890"
         }
       ]
