@@ -98,7 +98,9 @@ GET https://senderella.io/v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label
 Create request to PostNord Parcel
 
 ```
-POST https://senderella.io/v1/shipment/submit?accessToken=my_key
+POST /v1/shipment/submit?accessToken=my_key HTTP/1.1
+Host: senderella.io
+Accept: application/json
 {
   "service": 1000,
   "shipmentOptions": {},
@@ -159,7 +161,9 @@ Output will be like this:
 Validate request
 
 ```
-POST https://senderella.io/v1/shipment/validate?accessToken=my_key
+POST /v1/shipment/validate?accessToken=my_key HTTP/1.1
+Host: senderella.io
+Accept: application/json
 {
   "service": 1000,
   "shipmentOptions": {},
