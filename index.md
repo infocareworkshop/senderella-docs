@@ -6,8 +6,7 @@
 
 All endpoints are named with following schema:
 
-`https://senderella.io/version/action`
-`https://senderella.io/version/entity/action`
+`https://senderella.io/version/action` or `https://senderella.io/version/entity/action`
 
 Currently only `v1` is a valid `version`. Words inside path string must be separated with `-` sign.
 
