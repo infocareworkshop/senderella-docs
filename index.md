@@ -82,12 +82,12 @@ Each request to API must be followed with special **authentication token**. Requ
 
 There are some different ways to add your access token to request:
 
-### X-Hub-Api-Token header
+### X-Senderella-Api-Token header
 
-You can pass your access key using **X-Hub-Api-Token** header.
+You can pass your access key using **X-Senderella-Api-Token** header.
 
 `
-X-Hub-Api-Token: YOUR_TOKEN
+X-Senderella-Api-Token: YOUR_TOKEN
 `
 
 ### accessToken with GET parameters
