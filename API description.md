@@ -101,6 +101,7 @@ Create request to PostNord Parcel
 POST /v1/shipment/submit?accessToken=my_key HTTP/1.1
 Host: senderella.io
 Accept: application/json
+Content-Type: application/json
 {
   "service": 1000,
   "shipmentOptions": {},
@@ -148,12 +149,17 @@ Output will be like this:
 ```
 {
   "data": {
-    "shpCsid": 178798,
-    "packageId": 1,
+    "shpCsid": 179159,
+    "packages": [
+      {
+        "packageId": 1,
+        "packageNumber": "00370716483417464937"
+      }
+    ],
     "shipmentNumber": 0,
     "pickupId": null,
-    "pickupDate": "2017-06-06T00:00:00",
-    "senderellaId": "084aa0d8-6bb5-40aa-80ca-fc9da642a9bc"
+    "pickupDate": "2017-06-09T00:00:00",
+    "senderellaId": "bec1f438-b4e0-4ad6-9266-d188c07de01f"
   }
 }
 ```
@@ -164,6 +170,7 @@ Validate request
 POST /v1/shipment/validate?accessToken=my_key HTTP/1.1
 Host: senderella.io
 Accept: application/json
+Content-Type: application/json
 {
   "service": 1000,
   "shipmentOptions": {},
