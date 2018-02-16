@@ -90,12 +90,12 @@ Must be either `pdf`, `zpl` or `png`.
 
 ## Working Endpoints & Examples
 
-Get label:
+### Get label:
 ```
 GET https://senderella.io/v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label?accessToken=my_key
 ```
 
-Create request to PostNord Parcel
+### Create request to PostNord Parcel
 
 ```
 POST /v1/shipment/submit?accessToken=my_key HTTP/1.1
@@ -160,11 +160,12 @@ Output will be like this:
     "pickupId": null,
     "pickupDate": "2017-06-09T00:00:00",
     "senderellaId": "bec1f438-b4e0-4ad6-9266-d188c07de01f"
+    "shipment": ...
   }
 }
 ```
 
-Validate request
+### Validate request
 
 ```
 POST /v1/shipment/validate?accessToken=my_key HTTP/1.1
@@ -195,7 +196,7 @@ Content-Type: application/json
       ]
     }
   ],
-	"sender": {
+  "sender": {
     "name": "John Smith",
     "address": "Test st. 1",
     "postalCode": "35246",
@@ -213,3 +214,252 @@ Content-Type: application/json
   }
 }
 ```
+
+### Get the shipment
+
+```
+GET /v1/shipment/c2a00938-99b5-4e87-aff5-8e67761423d1
+content-type: application/json
+accept: application/json
+```
+Output:
+
+```js
+{
+  "data": {
+    "createdAt": "2018-02-15T09:06:23.514Z",
+    "deliveredByCarrierAt": null,
+    "finalized": false,
+    "guid": "c2a00938-99b5-4e87-aff5-8e67761423d1",
+    "id": 3182,
+    "packages": [
+      {
+        "guid": "1b02a162-a101-4945-acf6-607819297cf6",
+        "items": [
+          {
+            "activityNumber": 123123,
+            "brand": "LG",
+            "guid": "559d770a-9dca-4edb-854d-4811ac42f8f7",
+            "model": "test",
+            "senderRef": "test1"
+          }
+        ]
+      }
+    ],
+    "pickupDate": "2018-03-06",
+    "receivedByCarrierAt": null,
+    "receiver": {
+      "address": "Låsblecksgatan 7",
+      "city": "Linköping",
+      "countryCode": "SE",
+      "email": "kc.se@infocareworkshop.com",
+      "mobilePhoneNumber": "0776700303",
+      "name": "InfoCare CS AB",
+      "phoneNumber": "0776700303",
+      "postalCode": "58941"
+    },
+    "sender": {
+      "address": "test",
+      "city": "test",
+      "countryCode": "SE",
+      "email": "test@test.com",
+      "mobilePhoneNumber": "12345670",
+      "name": "test test",
+      "phoneNumber": "12345670",
+      "postalCode": "1234"
+    },
+    "shipmentData": {
+      "packages": [
+        {
+          "packageId": 1,
+          "packageNumber": "00370716483417837595"
+        }
+      ],
+      "pickupDate": "2018-03-06T00:00:00",
+      "pickupId": null,
+      "shipmentNumber": 0,
+      "shpCsid": 213828
+    },
+    "shipmentType": {
+      "id": 1000,
+      "name": "Post Nord Parcel"
+    },
+    "shipmentTypeId": 1000,
+    "userId": 5
+  }
+}
+```
+
+### Find shipment items
+
+```
+POST /v1/shipment/items/find
+content-type: application/json
+accept: application/json
+{
+  "filters": {
+    "brand ": "TEST"
+  },
+  "pagination": {
+    "offset": 0,
+    "limit": 1
+  }
+}
+```
+
+Output
+
+```js
+{
+  "data": [
+    {
+      "brand": "TEST",
+      "model": "test",
+      "guid": "5ac3ef63-904c-45cc-bcf2-561f94606afa",
+      "shipment": {
+        "id": 3183,
+        "guid": "6ca802d4-37bf-4419-a819-2f2ab928a2fc",
+        "shipmentTypeId": 1000,
+        "userId": 5,
+        "shipmentType": {
+          "id": 1000,
+          "name": "Post Nord Parcel"
+        },
+        "sender": {
+          "city": "test",
+          "name": "test test",
+          "email": "test@test.com",
+          "address": "test",
+          "postalCode": "1234",
+          "countryCode": "SE",
+          "phoneNumber": "12345670",
+          "mobilePhoneNumber": "12345670"
+        },
+        "receiver": {
+          "city": "Linköping",
+          "name": "InfoCare CS AB",
+          "email": "kc.se@infocareworkshop.com",
+          "address": "Låsblecksgatan 7",
+          "postalCode": "58941",
+          "countryCode": "SE",
+          "phoneNumber": "0776700303",
+          "mobilePhoneNumber": "0776700303"
+        },
+        "pickupDate": "2018-03-06",
+        "shipmentData": {
+          "shpCsid": 213899,
+          "packages": [
+            {
+              "packageId": 1,
+              "packageNumber": "00370716483417838660"
+            }
+          ],
+          "pickupId": null,
+          "pickupDate": "2018-03-06T00:00:00",
+          "shipmentNumber": 0
+        },
+        "packages": [
+          {
+            "guid": "8f87bcda-2add-4805-aea4-2900271d7e12",
+            "items": [
+              {
+                "brand": "LG",
+                "model": "test",
+                "guid": "9330f1cf-8a1d-4245-8696-826c2db9064b"
+              },
+              {
+                "brand": "TEST",
+                "model": "test",
+                "guid": "5ac3ef63-904c-45cc-bcf2-561f94606afa"
+              }
+            ]
+          }
+        ],
+        "createdAt": "2018-02-15T14:17:29.375Z",
+        "receivedByCarrierAt": null,
+        "deliveredByCarrierAt": null
+      }
+    }
+  ],
+  "pagination": {
+    "offset": 0,
+    "count": 2
+  }
+}
+```
+
+### Edit shipment items
+
+```
+POST /v1/shipment/6ca802d4-37bf-4419-a819-2f2ab928a2fc/items
+content-type: application/json
+accept: application/json
+```
+
+```js
+[
+  // Add new item (no guid and package required)
+  { 
+    "brand": "Apple",
+    "model": "iPhone",
+    "package": "8f87bcda-2add-4805-aea4-2900271d7e12"
+  },
+  // Edit existing item (guid required, package is optional)
+  { 
+    "brand": "TEST",
+    "model": "T1000",
+    "customData": "info",
+    "guid": "5ac3ef63-904c-45cc-bcf2-561f94606afa"
+  }  
+]
+```
+
+Output: modified shipment
+
+### Delete shipment items
+```
+DELETE /v1/shipment/c2a00938-99b5-4e87-aff5-8e67761423d1/items
+content-type: application/json
+accept: application/json
+
+["5ac3ef63-904c-45cc-bcf2-561f94606afa"]
+```
+
+Output: modified shipment
+
+### Finalize shipment
+
+```
+POST /v1/shipment/c2a00938-99b5-4e87-aff5-8e67761423d1/finalize
+content-type: application/json
+accept: application/json
+```
+
+Output: modified shipment, `finalized` will be `true`
+
+### Get picking list
+
+```
+GET /v1/shipment/c2a00938-99b5-4e87-aff5-8e67761423d1/picking-list
+```
+
+Parameters:
+
+| Name                   | Type       | Description                             |
+| ---------------------- | ---------- | --------------------------------------- |
+| template | String | `default.html` is default |
+| format | String | either `html` or `pdf`, `html` is default   |
+
+### Get barcode
+
+```
+GET /v1/barcode/{type}
+```
+| Name                   | Type       | Description                             |
+| ---------------------- | ---------- | --------------------------------------- |
+| type | String | |
+| text | String | |
+| scale | Int | Scaling factor |
+| height | Int | Bar height, in millimeters. Default – 10 |
+| includetext | Int | 1 or nothing |
+| textxalign | String | Default – `center` |
