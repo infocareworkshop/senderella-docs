@@ -416,6 +416,8 @@ accept: application/json
 
 Output: modified shipment
 
+Also you can add GET parameter `forced=1` to modify shipment that has been already finalized.
+
 ### Delete shipment items
 ```
 DELETE /v1/shipment/c2a00938-99b5-4e87-aff5-8e67761423d1/items
