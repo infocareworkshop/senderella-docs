@@ -56,7 +56,7 @@ OR
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
 | content | String | |
-| weight | Number | |
+| weight | Number | kg |
 | volume | Dimensions | |
 | goodsType | String | |
 | items | Array | Array of `PackageItem` |
