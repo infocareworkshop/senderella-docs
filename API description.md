@@ -15,6 +15,7 @@
 | email<sup>*</sup> | String | |
 | phoneNumber | String(35) | |
 | mobilePhoneNumber | String(35) |  |
+| customData | Object |  |
 
 ### Dimensions
 
@@ -451,6 +452,7 @@ Parameters:
 | ---------------------- | ---------- | --------------------------------------- |
 | template | String | `default.html` is default |
 | format | String | either `html` or `pdf`, `html` is default   |
+| locale | String | locale, `sv-SE` is default   |
 
 ### Get barcode
 
