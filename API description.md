@@ -430,6 +430,50 @@ accept: application/json
 
 Output: modified shipment
 
+### Edit packages
+
+```
+POST /v1/shipment/:shipmentGuid/packages
+content-type: application/json
+accept: application/json
+```
+
+```js
+[
+  { // Update existing package, guid required
+    "guid": "<existing package guid>",
+    "<package custom field1>": "<package custom value>",
+    "<package custom field2>": "<package custom value>"
+    // ...
+    "items": [ // Optional list of items
+      { // Modify existing item / move from another package
+        "guid": "<existing item guid>",
+        "<item custom field>": "<item custom value>"
+        // ...
+      },
+      { // Create a new item
+        "<item custom field>": "<item custom value>"
+        // ...
+      }
+    ]
+  },
+  {} // Create a new empty package
+]
+```
+
+Output: modified shipment
+
+You must specify all custom package fields otherwise they will be removed.
+
+You must specify all custom item fields otherwise they will be removed.
+
+You can omit packages of shipment that don't require modification.
+
+You can omit items of package that don't require modification.
+
+Also you can add GET parameter `forced=1` to modify shipment that has been already finalized.
+
+
 ### Finalize shipment
 
 ```
