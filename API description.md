@@ -51,6 +51,7 @@ OR
 | pickupDate | Date | |
 | pickupStart | Date | |
 | pickupEnd | Date | |
+| customData | Object | |
 
 ### Package
 
@@ -385,6 +386,104 @@ Output
   "pagination": {
     "offset": 0,
     "count": 2
+  }
+}
+```
+
+### find shipments
+
+```js
+POST /v1/shipment/find
+content-type: application/json
+accept: application/json
+
+{
+ "filters": {
+   "commonQuery": "00370726202946600886", // By shipmentNumber or packageNumber
+   "guid": "aa730d87-aff5-47ba-a808-f2e3da0052df", // By guid
+   "createdAt": { "$gt": "2019-01-01" }, // By dates, operators $gt (>) or $lt (<) are allowed everywhere
+   "sender": { "city": "Växjö" }, // By contact data
+   "customData": { "myVeryCustomParam": 123 }, // By custom data
+   "finalized": null // By non-finalized shipments
+ },
+ "pagination": {
+    "offset": 0,
+    "count": 100
+  }
+}
+```
+
+Output:
+
+```js
+{
+  "data": [
+    {
+      "id": 3339,
+      "guid": "aa730d87-aff5-47ba-a808-f2e3da0052df",
+      "shipmentTypeId": 1000,
+      "userId": 1,
+      "shipmentType": {
+        "id": 1000,
+        "name": "Post Nord Parcel"
+      },
+      "sender": {
+        "city": "Växjö",
+        "name": "John Smith",
+        "email": "test@test.test",
+        "address": "Test st. 1",
+        "postalCode": "35246",
+        "countryCode": "SE"
+      },
+      "receiver": {
+        "city": "Linköping",
+        "name": "Sven Svensson",
+        "email": "test@test.test",
+        "address": "Receiver street 10",
+        "postalCode": "589 41",
+        "countryCode": "SE"
+      },
+      "shipmentData": {
+        "shpCsid": 279266,
+        "packages": [
+          {
+            "packageId": 1,
+            "packageNumber": "00370726202946600886"
+          }
+        ],
+        "pickupId": null,
+        "pickupDate": "2019-02-15T00:00:00",
+        "shipmentNumber": 0
+      },
+      "packages": [
+        {
+          "volume": {
+            "volume": 0.1
+          },
+          "weight": 1.5,
+          "guid": "f55ba79b-8498-4cc2-b23b-f124bec44dd9",
+          "items": [
+            {
+              "brand": "Apple",
+              "model": "iPhone 7",
+              "serial": "1234567890",
+              "senderRef": "item 1",
+              "guid": "6eee57a7-0ea4-4acc-9625-206e31b6205d"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2019-02-15T09:00:35.146Z",
+      "receivedByCarrierAt": null,
+      "deliveredByCarrierAt": null,
+      "customData": {
+        "serviceProviderId": 132
+      }
+    }
+  ],
+  "pagination": {
+    "offset": 0,
+    "count": 1
   }
 }
 ```
