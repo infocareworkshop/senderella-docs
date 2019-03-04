@@ -415,10 +415,10 @@ accept: application/json
  "pagination": {
     "offset": 0,
     "count": 100
-  },
-  "order": [
-    ["createdAt", "desc"]
-  ]
+ },
+ "order": [
+   ["createdAt", "desc"]
+ ]
 }
 ```
 
