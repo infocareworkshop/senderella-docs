@@ -404,12 +404,21 @@ accept: application/json
    "createdAt": { "$gt": "2019-01-01" }, // By dates, operators $gt (>) or $lt (<) are allowed everywhere
    "sender": { "city": "Växjö" }, // By contact data
    "customData": { "myVeryCustomParam": 123 }, // By custom data
-   "finalized": null // By non-finalized shipments
+   "finalized": null, // By non-finalized shipments
+   "items": { // By item data
+     "customData": {
+       "activityNumber": "123456",
+       "status": "Waiting"
+     }
+   }
  },
  "pagination": {
     "offset": 0,
     "count": 100
-  }
+  },
+  "order": [
+    ["createdAt", "desc"]
+  ]
 }
 ```
 
