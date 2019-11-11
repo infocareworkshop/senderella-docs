@@ -33,7 +33,7 @@ OR
 | height                 | Number     | m                                       |
 | depth                  | Number     | m                                       |
 
-### Shipment request
+### Shipment booking request
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
