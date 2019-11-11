@@ -33,12 +33,12 @@ OR
 | height                 | Number     | m                                       |
 | depth                  | Number     | m                                       |
 
-### Shipment
+### Shipment booking request
 
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
 | service<sup>*</sup> | Int | |
-| shipmentOptions | Array | |
+| shipmentOptions | Object | |
 | requestOptions | ShipmentRequestOptions | |
 | orderNumber | String | |
 | shipmentNumber | String | |
@@ -52,6 +52,27 @@ OR
 | pickupStart | Date | |
 | pickupEnd | Date | |
 | customData | Object | |
+
+### Stored shipment
+| Name                   | Type       | Description                             |
+| ---------------------- | ---------- | --------------------------------------- |
+| id<sup>*</sup> | Int | Internal id |
+| guid<sup>*</sup> | GUID | |
+| shipmentTypeId<sup>*</sup> | Int | |
+| userId<sup>*</sup> | Int | |
+| shipmentType<sup>*</sup> | ShipmentType | |
+| sender<sup>*</sup> | ContactData | |
+| receiver<sup>*</sup> | ContactData | |
+| payer | ContactData | |
+| pickUp | ContactData | |
+| returnTo | ContactData | |
+| shipmentData | Object | Custom data from shipment service |
+| waitingForTransmission | Boolean | |
+| finalized | Boolean |
+| packages<sup>*</sup> | Array of `Package` | |
+| createdAt<sup>*</sup> | Date | |
+| receivedByCarrierAt | Date | |
+| deliveredByCarrierAt | Date | |
 
 ### Package
 
@@ -78,7 +99,7 @@ OR
 | Name                   | Type       | Description                             |
 | ---------------------- | ---------- | --------------------------------------- |
 | printLabel | LabelPrintingOptions | |
-| bundlingMode | String | |
+| delayedTransmit | Boolean | Default = false |
 
 ### LabelPrintingOptions
 
@@ -90,7 +111,7 @@ OR
 
 Must be either `pdf`, `zpl` or `png`.
 
-## Working Endpoints & Examples
+## Endpoints & Examples
 
 ### Get label:
 ```
@@ -619,3 +640,18 @@ GET /v1/barcode/{type}
 | height | Int | Bar height, in millimeters. Default – 10 |
 | includetext | Int | 1 or nothing |
 | textxalign | String | Default – `center` |
+
+## Finalization
+
+When you send the `/finalize` command shipment becomes sealed and you can't modify its content anymore.
+
+## Default flow vs delayed flow
+
+By default shipment will be validated and created immediately after the `/submit` command. Then you can download labels, change shipment's content and finally run the `/finalize` command.
+When you pass `requestOptions.delayedTransmit = true` then the delayed workflow will be applied:
+
+1. Doesn’t perform any request to carriers’ systems except validation, saves shipment to the db, assigns guid.
+2. Shipment will have empty `shipmentData` field and `waitingForTransmission = true`
+3. You can modify it but can't download a shipping label. Current picking list may defer from the final version of it.
+4. Request to the carrier will be performed after the `/finalize` command. We will use an actual shipment state as request's parameters instead of the initial. After that, `shipmentData` will contain data from the carrier, `waitingForTransmission` will be empty, `finalized` will be `true`. Also you can download shipping labels without restrictions.
+
