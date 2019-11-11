@@ -643,15 +643,15 @@ GET /v1/barcode/{type}
 
 ## Finalization
 
-When you send `/finalize` command shipment become sealed and you can't modify it's content anymore.
+When you send the `/finalize` command shipment becomes sealed and you can't modify its content anymore.
 
 ## Default flow vs delayed flow
 
-By default shipment will be validated and created immediately after `/submit` command. Then you can download labels, change shipment's content and finally run `/finalize` command.
-When you pass `requestOptions.delayedTransmit = true` then delayed workflow will be applied:
+By default shipment will be validated and created immediately after the `/submit` command. Then you can download labels, change shipment's content and finally run the `/finalize` command.
+When you pass `requestOptions.delayedTransmit = true` then the delayed workflow will be applied:
 
-1. Don't perform any request to shipment services except validation, save shipment to the db, assign guid.
+1. Doesn’t perform any request to carriers’ systems except validation, saves shipment to the db, assigns guid.
 2. Shipment will have empty `shipmentData` field and `waitingForTransmission = true`
-3. You can modify it but can't download a label. Pickup list could contain limited amount of data.
-5. Request to the shipment service will be performed after `/finalize` command. We will use actual shipment state as request parameters instead of initial. After that, `shipmentData` will contain data from shipment service, `waitingForTransmission` will be empty, `finalized` will be `true`. Also you can download labels without restrictions.
+3. You can modify it but can't download a shipping label. Current picking list may defer from the final version of it.
+4. Request to the carrier will be performed after the `/finalize` command. We will use an actual shipment state as request's parameters instead of the initial. After that, `shipmentData` will contain data from the carrier, `waitingForTransmission` will be empty, `finalized` will be `true`. Also you can download shipping labels without restrictions.
 
