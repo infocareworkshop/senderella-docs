@@ -52,6 +52,7 @@ OR
 | pickupStart | Date | |
 | pickupEnd | Date | |
 | customData | Object | |
+| trackingWebhooks | Array of String | Array of URIs |
 
 ### Stored shipment
 | Name                   | Type       | Description                             |
@@ -73,6 +74,7 @@ OR
 | createdAt<sup>*</sup> | Date | |
 | receivedByCarrierAt | Date | |
 | deliveredByCarrierAt | Date | |
+| trackingWebhooks | Array of String | Array of URIs |
 
 ### Package
 
