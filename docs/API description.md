@@ -68,6 +68,7 @@ OR
 | pickUp | ContactData | |
 | returnTo | ContactData | |
 | shipmentData | Object | Custom data from shipment service |
+| shipmentData.labelsCount | Int | How many labels are available for printing (can be empty) |
 | waitingForTransmission | Boolean | |
 | finalized | Boolean |
 | packages<sup>*</sup> | Array of `Package` | |
@@ -116,8 +117,23 @@ Must be either `pdf`, `zpl` or `png`.
 ## Endpoints & Examples
 
 ### Get label:
+
+Query params:
+
+| Name                   | Type       | Description                             |
+| ---------------------- | ---------- | --------------------------------------- |
+| format | LabelFormat | |
+| index | Int | Index of the label, if more than one is available, starts at zero, must be less than `shipmentData.labelsCount` |
+
 ```
 GET https://senderella.io/v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label?accessToken=my_key
+```
+
+Get multiple labels:
+
+```
+GET https://senderella.io/v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label?accessToken=my_key&index=0
+GET https://senderella.io/v1/shipment/31afedef-5820-47a6-8b48-a0d55cc392ac/label?accessToken=my_key&index=1
 ```
 
 ### Create request to PostNord Parcel
@@ -185,6 +201,7 @@ Output will be like this:
     "pickupId": null,
     "pickupDate": "2017-06-09T00:00:00",
     "senderellaId": "bec1f438-b4e0-4ad6-9266-d188c07de01f"
+    "labelsCount": 1,
     "shipment": ...
   }
 }
@@ -302,6 +319,7 @@ Output:
       ],
       "pickupDate": "2018-03-06T00:00:00",
       "pickupId": null,
+      "labelsCount": 2,
       "shipmentNumber": 0,
       "shpCsid": 213828
     },
